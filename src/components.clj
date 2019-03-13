@@ -18,11 +18,14 @@
     [:head
      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
      [:link {:rel "icon" :type "image/png" :href "/favicon.png"}]
-     (coast/css "bundle.css")
-     (coast/js "bundle.js")]
+     (coast/css "bundle.css")]
     [:body
      (nav)
-     body]])
+     (coast/js "bundle.js")
+     body
+     [:script {:src "/js/highlight.pack.js"}]
+     [:script
+      "hljs.initHighlightingOnLoad();"]]])
 
 
 (defn link-to [url & body]
@@ -46,8 +49,9 @@
   (let [[m body] (if (map? (first args))
                    [(first args) (rest args)]
                    [{} args])
-        mw (or (:mw m) 8)]
-    [:div {:class (str "pa4 w-100 center mw" mw)}
+        mw (or (:mw m) 8)
+        bg (or (:bg m) "white")]
+    [:div {:class (str "pa4 w-100 center mw" mw " bg-" bg)}
      [:div {:class "overflow-auto"}
        body]]))
 
@@ -136,3 +140,8 @@
 (defn tc [& body]
   [:div {:class "tc"}
    body])
+
+
+(defn hero [& body]
+  [:div {:class "hero-topo-bg pv6"}
+    body])

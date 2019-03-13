@@ -1,15 +1,45 @@
 (ns home
   (:require [coast]
             [clojure.string :as string]
-            [components :refer [container]]
+            [components :refer [container hero]]
             [markdown.core :as markdown]))
 
 
 (defn index [request]
-  (container
-   [:div {:class "tc-l mt4 mt5-m mt6-l ph3"}
-    [:h1 {:class "f2 f1-l fw3 mb0 lh-title mb4"} "Clojure web development made easy"]
-    [:a {:class "f6 no-underline shadow-4 grow dib v-mid bg-blue white ba b--blue ph4 pv3 mb3 br1" :href (coast/url-for ::docs)} "Get Started with Coast"]]))
+  [:div
+   (hero
+    [:div {:class "tc-l ph3"}
+     [:h1 {:class "f2 f1-l fw3 near-black mb0 lh-title mb4"} "Clojure web development made easy"]
+     [:a {:class "f6 no-underline shadow-4 grow dib v-mid bg-green white ba b--green ph4 pv3 mb3 br1" :href (coast/url-for ::docs)} "Get Started with Coast"]])
+
+   [:div {:class "pv6 bg-white"}
+    [:div {:class "tc-l ph3"}
+     [:h2 {:class "f3 f2-l fw3 near-black mb0 lh-title mb4"}
+      "The missing clojure web framework"]
+     [:p {:class "f4 lh-copy measure center-l"}
+      "Making a modern web app can be crazy. Between tracking down up-to-date, secure dependencies and your own application code, things can get out of control quickly.
+       Coast on Clojure makes it much easier and more fun.
+       It includes everything you need to make great web applications."]]]
+
+   (hero
+    [:div {:class "cf ph3 mw8 center"}
+     [:div {:class "fl w-100 w-third-ns ph2"}
+      [:h3 {:class "f3 f2-l fw3 mb0 lh-title"}
+        "⚡️ Fast"]
+      [:p {:class "lh-copy measure"}
+        "Coast was made to take your ideas from thought to completion to as fast as possible"]]
+
+     [:div {:class "fl w-100 w-third-ns ph2"}
+      [:h3 {:class "f3 f2-l fw3 mb0 lh-title"}
+        "👮‍♂️ Secure"]
+      [:p {:class "lh-copy measure"}
+        "Coast takes security seriously and helps you avoid many common security mistakes"]]
+
+     [:div {:class "fl w-100 w-third-ns ph2"}
+      [:h3 {:class "f3 f2-l fw3 mb0 lh-title"}
+        "🎉 Fun"]
+      [:p {:class "lh-copy measure"}
+        "Make web development fun again with consistent syntax and lightning fast feedback via the REPL"]]])])
 
 
 (defn heading-anchors [text state]
@@ -22,6 +52,20 @@
     [text state]))
 
 
+(defn tip [text state]
+  (if (string/starts-with? text "<p>TIP:")
+    (let [s (string/replace text #"<p>" "<p class=\"tip\">")]
+      [s state])
+    [text state]))
+
+
+(defn note [text state]
+  (if (string/starts-with? text "<p>NOTE:")
+    (let [s (string/replace text #"<p>" "<p class=\"note\">")]
+      [s state])
+    [text state]))
+
+
 (defn doc [request]
   (let [filename (get-in request [:params :doc])]
     (container
@@ -29,13 +73,13 @@
        [:div {:class "fl w-100 w-25-ns pa2"}
         [:div {:class "sidebar"}
          (coast/raw
-           (markdown/md-to-html-string (slurp "markdown/README.md") :heading-anchors true))]]
+           (markdown/md-to-html-string (slurp "markdown/readme.md") :heading-anchors true))]]
        [:div {:class "fl w-100 w-75-ns pa2"}
         [:div {:class "content"}
          (coast/raw
            (markdown/md-to-html-string
             (slurp (str "markdown/" filename ".md"))
-            :custom-transformers [heading-anchors]))]]])))
+            :custom-transformers [heading-anchors tip note]))]]])))
 
 
 (defn docs [request]

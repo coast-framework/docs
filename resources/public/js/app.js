@@ -8,4 +8,8 @@ $(function() {
       $this.closest('form').submit();
     }
   })
+
+  $('a[href="' + window.location.pathname + '"]').each(function(el) {
+    $(this).css('color', '#357EDD');
+  })
 })
