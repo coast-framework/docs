@@ -2,13 +2,26 @@
   (:require [coast]))
 
 
+(defn nav []
+  [:nav {:class "dt w-100 border-box pa3 ph5-ns"}
+   [:a {:class "dtc v-mid mid-gray link dim w-25" :href (coast/url-for :home/index) :title "Home"}
+    [:img {:src "/favicon.png" :class "dib w2 h2 br-100" :alt "Coast on Clojure"}]
+    [:span {:class "dark-gray ml2 v-top mt2 dib"} "Coast"]]
+   [:div {:class "dtc v-mid w-75 tr"}
+    [:a {:class "link dim dark-gray f6 f5-ns dib mr3 mr4-ns" :href (coast/url-for :home/docs) :title "Docs"} "Docs"]
+    [:a {:class "link dim dark-gray f6 f5-ns dib mr3 mr4-ns" :href "https://twitter.com/coastonclojure" :title "Twitter"} "Twitter"]
+    [:a {:class "link dim dark-gray f6 f5-ns dib" :href "https://github.com/coast-framework/coast" :title "Github"} "Github"]]])
+
+
 (defn layout [request body]
   [:html
     [:head
      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
+     [:link {:rel "icon" :type "image/png" :href "/favicon.png"}]
      (coast/css "bundle.css")
      (coast/js "bundle.js")]
     [:body
+     (nav)
      body]])
 
 
@@ -29,8 +42,11 @@
    (button-to am {} s)))
 
 
-(defn container [m & body]
-  (let [mw (or (:mw m) 8)]
+(defn container [& args]
+  (let [[m body] (if (map? (first args))
+                   [(first args) (rest args)]
+                   [{} args])
+        mw (or (:mw m) 8)]
     [:div {:class (str "pa4 w-100 center mw" mw)}
      [:div {:class "overflow-auto"}
        body]]))
