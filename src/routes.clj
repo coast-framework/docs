@@ -1,10 +1,9 @@
 (ns routes
-  (:require [coast]
-            [components]))
+  (:require [coast]))
 
 (def routes
   (coast/routes
-    (coast/site-routes components/layout
+    (coast/site-routes :components/layout
       [:get "/" :home/index]
       [:get "/docs" :home/docs]
       [:get "/docs/:doc.md" :home/doc]

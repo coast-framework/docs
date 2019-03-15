@@ -9,8 +9,8 @@
   [:div
    (hero
     [:div {:class "tc-l ph3"}
-     [:h1 {:class "f2 f1-l fw3 near-black mb0 lh-title mb4"} "Clojure web development made easy"]
-     [:a {:class "f6 no-underline shadow-4 grow dib v-mid bg-green white ba b--green ph4 pv3 mb3 br1" :href (coast/url-for ::docs)} "Get Started with Coast"]])
+     [:h1 {:class "f2 f1-l fw3 white mb0 lh-title mb4"} "Clojure web development made easy"]
+     [:a {:class "no-underline br2 shadow-4 grow dib v-mid bg-green white ba b--green ph4 pv3 mb3 br1" :href (coast/url-for ::docs)} "Get Started with Coast"]])
 
    [:div {:class "pv6 bg-white"}
     [:div {:class "tc-l ph3"}
@@ -22,7 +22,7 @@
        It includes everything you need to make great web applications."]]]
 
    (hero
-    [:div {:class "cf ph3 mw8 center"}
+    [:div {:class "cf ph3 mw8 center white"}
      [:div {:class "fl w-100 w-third-ns ph2"}
       [:h3 {:class "f3 f2-l fw3 mb0 lh-title"}
         "⚡️ Fast"]
@@ -68,18 +68,16 @@
 
 (defn doc [request]
   (let [filename (get-in request [:params :doc])]
-    (container
-      [:div {:class "cf"}
-       [:div {:class "fl w-100 w-25-ns pa2"}
-        [:div {:class "sidebar"}
-         (coast/raw
-           (markdown/md-to-html-string (slurp "markdown/readme.md") :heading-anchors true))]]
-       [:div {:class "fl w-100 w-75-ns pa2"}
-        [:div {:class "content"}
-         (coast/raw
-           (markdown/md-to-html-string
-            (slurp (str "markdown/" filename ".md"))
-            :custom-transformers [heading-anchors tip note]))]]])))
+    [:div {:class "grid near-white"}
+     [:div {:class "pa4 near-white sidebar-container"}
+      [:div {:class "fr-l sidebar"}
+       (coast/raw
+         (markdown/md-to-html-string (slurp "markdown/readme.md") :heading-anchors true))]]
+     [:div {:class "ph4 bg-white content"}
+      (coast/raw
+        (markdown/md-to-html-string
+         (slurp (str "markdown/" filename ".md"))
+         :custom-transformers [heading-anchors tip note]))]]))
 
 
 (defn docs [request]
