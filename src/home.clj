@@ -14,9 +14,9 @@
 
    [:div {:class "pv6 bg-white"}
     [:div {:class "tc-l ph3"}
-     [:h2 {:class "f3 f2-l fw3 near-black mb0 lh-title mb4"}
+     [:h2 {:class "f2 f1-l fw3 near-black mb0 lh-title mb4"}
       "The missing clojure web framework"]
-     [:p {:class "f4 lh-copy measure center-l"}
+     [:p {:class "lh-copy measure center-l"}
       "Making a modern web app can be crazy. Between tracking down up-to-date, secure dependencies and your own application code, things can get out of control quickly.
        Coast on Clojure makes it much easier and more fun.
        It includes everything you need to make great web applications."]]]
