@@ -2,7 +2,6 @@
   (:require [coast]
             [clojure.string :as string]))
 
-(def page-title (atom nil))
 
 (defn nav [request]
   [:nav {:class "dt w-100 border-box pa3 ph5-ns hero-topo-bg"}
@@ -18,14 +17,14 @@
     [:a {:class "link dim white f6 f5-ns dib" :href "https://github.com/coast-framework/coast" :title "Github"} "Github"]]])
 
 
-(defn layout [request body]
+(defn layout [request {:keys [body title]}]
   [:html
     [:head
      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
      [:link {:rel "icon" :type "image/png" :href "/favicon.png"}]
-     [:title (if (string/blank? @page-title)
+     [:title (if (string/blank? title)
                (str "Coast on Clojure | The easy clojure web framework")
-               (str "Coast on Clojure | " @page-title))]
+               (str "Coast on Clojure | " title))]
      (coast/css "bundle.css")
      (coast/js "bundle.js")]
     [:body

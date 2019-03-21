@@ -1,7 +1,7 @@
 (ns home
   (:require [coast]
             [clojure.string :as string]
-            [components :refer [page-title container hero table thead td tr tbody th link-to button-to]]
+            [components :refer [container hero table thead td tr tbody th link-to button-to]]
             [markdown.core :as markdown]))
 
 
@@ -65,28 +65,17 @@
       [s state])
     [text state]))
 
-(defn capitalize-words
-  "Capitalize every word in a string"
-  [s]
-  (string/replace
-    (->> (string/split (str s) #"\b")
-         (map string/capitalize)
-         string/join)
-    #"[^a-zA-Z\d\s:]" " "))
 
 (defn doc [request]
   (let [filename (get-in request [:params :doc])]
-    (reset! page-title (capitalize-words filename))
     [:div {:class "grid bg-nearest-white"}
      [:div {:class "pa4 bg-nearest-white sidebar-container"}
       [:div {:class "fr-l sidebar"}
        (coast/raw
-         (markdown/md-to-html-string (slurp "markdown/readme.md") :heading-anchors true))]]
+         (slurp "html/readme.md"))]]
      [:div {:class "ph4 bg-white content"}
       (coast/raw
-        (markdown/md-to-html-string
-         (slurp (str "markdown/" filename ".md"))
-         :custom-transformers [heading-anchors tip note]))]]))
+        (slurp (str "html/" filename ".md")))]]))
 
 
 (defn docs [request]
