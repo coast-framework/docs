@@ -1,8 +1,6 @@
 (ns home
   (:require [coast]
-            [clojure.string :as string]
-            [components :refer [container hero table thead td tr tbody th link-to button-to]]
-            [markdown.core :as markdown]))
+            [components :refer [container hero table thead td tr tbody th link-to button-to]]))
 
 
 (defn index [request]
@@ -40,30 +38,6 @@
         "🎉 Fun"]
       [:p {:class "lh-copy measure"}
         "Make web development fun again with consistent syntax and lightning fast feedback via the REPL"]]])])
-
-
-(defn heading-anchors [text state]
-  (if (true? (:inline-heading state))
-    (let [[_ heading] (re-find #">(.*)<" text)
-          anchor (-> (string/replace heading #"\s" "-")
-                     (string/lower-case))
-          anchor (str "<h$1 id=\"user-content-" anchor "\">")]
-      [(string/replace text #"<h([0-9])>" anchor) state])
-    [text state]))
-
-
-(defn tip [text state]
-  (if (string/starts-with? text "<p>TIP:")
-    (let [s (string/replace text #"<p>" "<p class=\"tip\">")]
-      [s state])
-    [text state]))
-
-
-(defn note [text state]
-  (if (string/starts-with? text "<p>NOTE:")
-    (let [s (string/replace text #"<p>" "<p class=\"note\">")]
-      [s state])
-    [text state]))
 
 
 (defn doc [request]
