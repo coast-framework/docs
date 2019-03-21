@@ -168,6 +168,8 @@
 
 
 (defn server-error [request]
+  (when (some? (:exception request))
+    (println (:exception request)))
   (coast/server-error
     [:html
       [:head
