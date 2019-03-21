@@ -65,7 +65,7 @@
                     [nil (merge-with merge (or errors {:errors {}}) {:errors {:invite/code "There was a problem with that invitation code"}})]
                     [(coast/insert m) nil])]
     (if (nil? errors)
-      (-> (coast/redirect-to :post/index)
+      (-> (coast/redirect-to :home/dashboard)
           (assoc :session {:member/email (:invite/email invite)}))
       (build (merge request errors)))))
 
