@@ -1,7 +1,7 @@
 (ns home
   (:require [coast]
             [clojure.string :as string]
-            [components :refer [container hero]]
+            [components :refer [page-title container hero table thead td tr tbody th link-to button-to]]
             [markdown.core :as markdown]))
 
 
@@ -65,11 +65,20 @@
       [s state])
     [text state]))
 
+(defn capitalize-words
+  "Capitalize every word in a string"
+  [s]
+  (string/replace
+    (->> (string/split (str s) #"\b")
+         (map string/capitalize)
+         string/join)
+    #"[^a-zA-Z\d\s:]" " "))
 
 (defn doc [request]
   (let [filename (get-in request [:params :doc])]
-    [:div {:class "grid near-white"}
-     [:div {:class "pa4 near-white sidebar-container"}
+    (reset! page-title (capitalize-words filename))
+    [:div {:class "grid bg-nearest-white"}
+     [:div {:class "pa4 bg-nearest-white sidebar-container"}
       [:div {:class "fr-l sidebar"}
        (coast/raw
          (markdown/md-to-html-string (slurp "markdown/readme.md") :heading-anchors true))]]
@@ -86,6 +95,65 @@
 
 (defn screencast [request]
   [:div "screencast!"])
+
+
+(defn dashboard [request]
+  (let [members (coast/q '[:select * :from member])
+        invites (coast/q '[:select * :from invite])]
+    (container {:mw 9}
+      [:h1 {:class "f2"} "Members"]
+      (table
+       (thead
+         (tr
+           (th "id")
+           (th "email")
+           (th "first-name")
+           (th "last-name")
+           (th "updated-at")
+           (th "created-at")
+           (th)
+           (th)))
+       (tbody
+         (for [member members]
+           (tr
+             (td (:member/id member))
+             (td (:member/email member))
+             (td (:member/first-name member))
+             (td (:member/last-name member))
+             (td (:member/updated-at member))
+             (td (:member/created-at member))
+             (td
+               (link-to (coast/url-for :member/edit member) "Edit"))
+             (td
+               (button-to (coast/action-for :member/delete member) {:data-confirm "Are you sure?"} "Delete"))))))
+
+      [:h1 {:class "f2"} "Invites"]
+      (table
+       (thead
+         (tr
+           (th "id")
+           (th "email")
+           (th "approved-at")
+           (th "updated-at")
+           (th "created-at")
+           (th "code")
+           (th)
+           (th)))
+       (tbody
+         (for [invite invites]
+           (tr
+             (td (:invite/id invite))
+             (td (:invite/email invite))
+             (td (:invite/approved-at invite))
+             (td (:invite/updated-at invite))
+             (td (:invite/created-at invite))
+             (td (:invite/code invite))
+             (td
+               (button-to (coast/action-for :invite/approve invite) "Approve"))
+             (td
+               (link-to (coast/url-for :invite/edit invite) "Edit"))
+             (td
+               (button-to (coast/action-for :invite/delete invite) {:data-confirm "Are you sure?"} "Delete")))))))))
 
 
 (defn not-found [request]

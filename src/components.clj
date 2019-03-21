@@ -1,10 +1,15 @@
 (ns components
-  (:require [coast]))
+  (:require [coast]
+            [clojure.string :as string]))
 
+(def page-title (atom nil))
 
-(defn nav []
+(defn nav [request]
   [:nav {:class "dt w-100 border-box pa3 ph5-ns hero-topo-bg"}
-   [:a {:class "dtc v-mid white link dim w-25" :href (coast/url-for :home/index) :title "Home"}
+   [:a {:class "dtc v-mid white link dim w-25" :href (if (some? (get-in request [:session :member/email]))
+                                                      (coast/url-for :home/dashboard)
+                                                      (coast/url-for :home/index))
+                                               :title "Home"}
     [:img {:src "/favicon.png" :class "dib w2 h2 br-100" :alt "Coast on Clojure"}]
     [:span {:class "ml2 v-top mt2 dib white"} "Coast"]]
    [:div {:class "dtc v-mid w-75 tr"}
@@ -18,10 +23,16 @@
     [:head
      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
      [:link {:rel "icon" :type "image/png" :href "/favicon.png"}]
+     [:title (if (string/blank? @page-title)
+               (str "Coast on Clojure | The easy clojure web framework")
+               (str "Coast on Clojure | " @page-title))]
      (coast/css "bundle.css")
      (coast/js "bundle.js")]
     [:body
-     (nav)
+     (when (some? (:flash request))
+      [:div {:class "bg-light-blue bg-blue pa3 tc"}
+       (:flash request)])
+     (nav request)
      body
      [:script {:src "/js/highlight.pack.js"}]
      [:script
@@ -86,10 +97,19 @@
 
 
 (defn submit [value]
-  [:input {:class "input-reset pointer dim ml3 db bn f6 br2 ph3 pv2 dib white bg-blue"
+  [:input {:class "input-reset pointer dim db bn f6 br2 ph3 pv2 dib white bg-blue"
            :type "submit"
            :value value}])
 
+(defn submit-lg [value]
+  [:input {:class "input-reset pointer dim db bn f6 br2 ph4 pv3 dib white bg-blue"
+           :type "submit"
+           :value value}])
+
+(defn submit-block [value]
+  [:input {:class "input-reset pointer dim db bn w-100 f6 br2 ph4 pv3 dib white bg-blue"
+           :type "submit"
+           :value value}])
 
 (defn dt [s]
   [:dt {:class "f6 b mt2"} s])
@@ -119,7 +139,7 @@
 
 
 (defn input [m]
-  [:input (merge {:class "input-reset ba b--black-20 pa2 mb2 db w-100"} m)])
+  [:input (merge {:class "input-reset outline-0 pa3 db w-100 bg-near-white bn br1 f4"} m)])
 
 
 (defn text-muted [s]
@@ -132,7 +152,7 @@
     [k m body]))
 
 
-(->> [:mr1 :mr2 :mr3 :mr4 :mr5]
+(->> [:mr1 :mr2 :mr3 :mr4 :mr5 :ml1 :ml2 :ml3 :ml4 :ml5 :fr :cf]
      (mapv name)
      (mapv #(coast/intern-var % (el :span {:class %}))))
 
@@ -145,3 +165,9 @@
 (defn hero [& body]
   [:div {:class "hero-topo-bg pv6"}
     body])
+
+
+(defn error [s]
+  (when (some? s)
+    [:div {:class "f6 red"}
+     s]))
