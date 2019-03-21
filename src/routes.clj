@@ -8,7 +8,7 @@
       [:404 :home/not-found]
       [:500 :home/server-error]
 
-      (coast/wrap-routes middleware/custom-layout
+      (coast/wrap-routes middleware/layout
         [:get "/" :home/index]
         [:get "/docs" :home/docs]
         [:get "/docs/:doc.md" :home/doc]

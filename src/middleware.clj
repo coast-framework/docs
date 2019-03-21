@@ -20,12 +20,14 @@
     #"[^a-zA-Z\d\s:]" " "))
 
 
-(defn custom-layout [handler]
+(defn layout [handler]
   (fn [request]
-    (let [hiccup (handler request)
-          response (-> (coast/ok hiccup :html)
-                       (assoc :title (capitalize-words (get-in request [:params :doc]))))
-          body (-> (components/layout request response)
-                   (coast/html)
-                   (str))]
-      (assoc response :body body))))
+    (let [original-response (handler request)]
+      (if (map? original-response)
+        original-response
+        (let [title (capitalize-words (get-in request [:params :doc]))]
+          (-> (components/layout request {:body original-response
+                                          :title title})
+              (coast/html)
+              (str)
+              (coast/ok :html)))))))
