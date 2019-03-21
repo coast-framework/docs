@@ -33,7 +33,8 @@
                    (take 50)
                    (filter #(not (.isDirectory %)))
                    (map #(.getName %)))]
-    (for [filename files]
+    (doseq [filename files]
      (spit
       (str "html/" filename)
-      (markdown/md-to-html-string (slurp (str "docs/" filename) :custom-transformers [heading-anchors tip note]))))))
+      (markdown/md-to-html-string (slurp (str "docs/" filename))
+                                  :custom-transformers [heading-anchors tip note])))))
