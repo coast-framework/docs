@@ -1,5 +1,6 @@
 (ns routes
-  (:require [coast]))
+  (:require [coast]
+            [middleware]))
 
 (def routes
   (coast/routes
@@ -16,7 +17,7 @@
 
       [:resource :invite :only [:build :create]]
 
-      (coast/wrap-routes :middleware/auth
+      (coast/wrap-routes middleware/auth
         [:get "/dashboard" :home/dashboard]
         [:delete "/sessions" :session/delete]
         [:resource :member :except [:index :view :build :create]]
