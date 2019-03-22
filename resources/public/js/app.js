@@ -10,8 +10,10 @@ $(function() {
   })
 
   $('a[href="' + window.location.pathname + '"]').each(function(el) {
-    if(window.location.pathname === '/docs') { return; }
-
-    $(this).css('color', '#357EDD');
+    if(window.location.pathname === '/docs') {
+      $('a[href="/docs/installation.md"]').css('color', '#357EDD');
+    } else {
+      $(this).css('color', '#357EDD');
+    }
   })
 })
