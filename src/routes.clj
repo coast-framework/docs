@@ -1,14 +1,12 @@
 (ns routes
   (:require [coast]
+            [components]
             [middleware]))
 
 (def routes
-  (coast/routes
-    (coast/site-routes
-      [:404 :home/not-found]
-      [:500 :home/server-error]
-
-      (coast/wrap-routes middleware/layout
+  (coast/site
+    (coast/with middleware/set-title
+      (coast/with-layout components/layout
         [:get "/" :home/index]
         [:get "/docs" :home/docs]
         [:get "/docs/:doc.md" :home/doc]
@@ -21,9 +19,12 @@
 
         [:resource :invite :only [:build :create]]
 
-        (coast/wrap-routes middleware/auth
+        (coast/with middleware/auth
           [:get "/dashboard" :home/dashboard]
           [:delete "/sessions" :session/delete]
           [:resource :member :except [:index :view :build :create]]
           [:resource :invite :except [:index :view :build :create]]
-          [:put "/invite/:invite-id/approve" :invite/approve])))))
+          [:put "/invite/:invite-id/approve" :invite/approve])))
+
+    [:404 :home/not-found]
+    [:500 :home/server-error]))
