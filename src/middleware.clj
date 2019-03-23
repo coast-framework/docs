@@ -1,7 +1,6 @@
 (ns middleware
   (:require [coast]
-            [clojure.string :as string]
-            [components]))
+            [clojure.string :as string]))
 
 (defn auth [handler]
   (fn [request]
@@ -20,14 +19,7 @@
     #"[^a-zA-Z\d\s:]" " "))
 
 
-(defn layout [handler]
+(defn set-title [handler]
   (fn [request]
-    (let [original-response (handler request)]
-      (if (map? original-response)
-        original-response
-        (let [title (capitalize-words (get-in request [:params :doc]))]
-          (-> (components/layout request {:body original-response
-                                          :title title})
-              (coast/html)
-              (str)
-              (coast/ok :html)))))))
+    (-> (assoc request :title (capitalize-words (get-in request [:params :doc])))
+        (handler))))
