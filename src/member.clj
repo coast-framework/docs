@@ -103,12 +103,17 @@
   (let [member (coast/fetch :member (-> request :params :member-id))
         [_ errors] (-> (select-keys member [:member/id])
                        (merge (:params request))
-                       (coast/validate [[:required [:member/id :member/first-name :member/email :member/last-name :member/password]]])
-                       (select-keys [:member/id :member/first-name :member/email :member/last-name :member/password])
+                       (coast/validate [[:required [:member/first-name
+                                                    :member/last-name
+                                                    :member/email]]])
+                       (select-keys [:member/first-name
+                                     :member/last-name
+                                     :member/email
+                                     :member/id])
                        (coast/update)
                        (coast/rescue))]
     (if (nil? errors)
-      (coast/redirect-to ::index)
+      (coast/redirect-to :home/dashboard)
       (edit (merge request errors)))))
 
 
