@@ -38,8 +38,7 @@
     (if (and (nil? errors)
              (true? valid?))
       (-> (coast/redirect-to :home/dashboard)
-          (assoc :session {:member/email email})
-          (assoc :flash "flash message"))
+          (assoc :session {:member/email email}))
       (build (merge request errors {:error/message "Invalid email or password"})))))
 
 
