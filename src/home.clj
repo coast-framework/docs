@@ -120,24 +120,22 @@
 
 
 (defn not-found [request]
-  (coast/not-found
-    [:html
-     [:head
-      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-      (coast/css "bundle.css")
-      (coast/js "bundle.js")]
-     [:body
-      [:h1 "Couldn't find what you were looking for"]]]))
+  [:html
+   [:head
+    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
+    (coast/css "bundle.css")
+    (coast/js "bundle.js")]
+   [:body
+    [:h1 "Couldn't find what you were looking for"]]])
 
 
 (defn server-error [request]
   (when (some? (:exception request))
     (println (:exception request)))
-  (coast/server-error
-    [:html
-      [:head
-       [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-       (coast/css "bundle.css")
-       (coast/js "bundle.js")]
-      [:body
-       [:h1 "Something went wrong!"]]]))
+  [:html
+    [:head
+     [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
+     (coast/css "bundle.css")
+     (coast/js "bundle.js")]
+    [:body
+     [:h1 "Something went wrong!"]]])
