@@ -3,9 +3,9 @@
             [clojure.string :as string]))
 
 
-(defn nav [request]
+(defn nav [session]
   [:nav {:class "dt w-100 border-box pa3 ph5-ns hero-topo-bg"}
-   [:a {:class "dtc v-mid white link dim w-25" :href (if (some? (get-in request [:session :member/email]))
+   [:a {:class "dtc v-mid white link dim w-25" :href (if (some? (:member/email session))
                                                       (coast/url-for :home/dashboard)
                                                       (coast/url-for :home/index))
                                                :title "Home"}
@@ -17,7 +17,7 @@
     [:a {:class "link dim white f6 f5-ns dib" :href "https://github.com/coast-framework/coast" :title "Github"} "Github"]]])
 
 
-(defn layout [request {:keys [body title]}]
+(defn layout [{:keys [flash title session]} body]
   [:html
     [:head
      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
@@ -28,10 +28,10 @@
      (coast/css "bundle.css")
      (coast/js "bundle.js")]
     [:body
-     (when (some? (:flash request))
+     (when (some? flash)
       [:div {:class "bg-light-blue bg-blue pa3 tc"}
-       (:flash request)])
-     (nav request)
+       flash])
+     (nav session)
      body
      [:script {:src "/js/highlight.pack.js"}]
      [:script
