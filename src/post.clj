@@ -84,7 +84,7 @@
          {:form-params (coast/action-for ::change post)
           :url (coast/url-for ::edit post)}
          :json)
-        (coast/redirect-to ::index))
+        (coast/redirect-to :home/dashboard))
       (build (merge request errors)))))
 
 
