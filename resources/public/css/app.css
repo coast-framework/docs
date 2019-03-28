@@ -73,6 +73,14 @@ html, body {
   grid-column: span 2;
 }
 
+.content p {
+  font-size: 21px;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: -0.06300000101327896px;
+  line-height: 33px;
+}
+
 .sidebar h1 {
   display: none;
 }
