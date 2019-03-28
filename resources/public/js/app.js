@@ -56,7 +56,6 @@ $(function() {
   $(document).on('keyup', '[name="post/title"],[name="post/body"]', onKeyUp);
 
   function onKeyUp(e) {
-    console.log("onKeyUp");
     var $form = $(this).closest('form');
 
     if (!!timer) { return; }
