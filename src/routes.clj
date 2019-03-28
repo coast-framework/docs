@@ -28,7 +28,8 @@
           [:post "/posts/preview" :post/preview]
           [:put "/invite/:invite-id/approve" :invite/approve])
 
-        [:resource :post :only [:view]]))
+        [:get "/posts/:post-slug" :post/view]
+        [:get "/posts" :post/index]))
 
     [:404 :home/not-found]
     [:500 :home/server-error]))

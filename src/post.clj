@@ -1,6 +1,7 @@
 (ns post
   (:require [coast]
             [markdown.core :as markdown]
+            [clojure.string :as string]
             [components :refer [submit-block container tc link-to table thead tbody td th tr button-to text-muted mr2 dl dd dt submit input label textarea]]))
 
 
@@ -15,15 +16,31 @@
       :html)))
 
 
-(defn view [request]
-  (let [id (-> request :params :post-id)
-        post (coast/fetch :post id)]
+(defn index [request]
+  (let [posts (coast/q '[:select * :from post])]
     (container {:mw 7}
-      [:h2 {:class "f1-l f-subheadline-l f2"}
-        (:post/title post)]
       [:div {:class "content"}
-       (coast/raw
-         (markdown/md-to-html-string (:post/body post)))])))
+        (for [{:post/keys [title body] :as post} posts]
+          [:div {:class "mb4"}
+           [:h2 {:class "f2-l f-subheadline-l f3"} title]
+           [:p (subs body 0 150)]
+           [:a {:href (coast/url-for :post/view post)
+                :class "underline blue"}
+            "Read More"]])])))
+
+
+
+(defn view [request]
+  (let [slug (-> request :params :post-slug)
+        post (coast/find-by :post {:slug slug})]
+    (if (nil? post)
+      (coast/raise {:not-found true})
+      (container {:mw 7}
+        [:h2 {:class "f1-l f-subheadline-l f2"}
+          (:post/title post)]
+        [:div {:class "content"}
+         (coast/raw
+           (markdown/md-to-html-string (:post/body post)))]))))
 
 
 (defn errors [m]
@@ -69,13 +86,24 @@
      (form (coast/action-for ::create) request)]))
 
 
+(defn slug [s]
+  (str (-> (.toLowerCase s)
+           (string/replace #"\s+" "-")
+           (string/replace #"[^\w\-]+" "")
+           (string/replace #"\-\-+" "-")
+           (string/replace #"^-+" "")
+           (string/replace #"-+$" ""))
+       "-" (last (string/split (str (coast/uuid)) #"-"))))
+
+
 (defn create [{:keys [member params] :as request}]
   (let [params (if (coast/xhr? request)
                  params
                  (merge params {:post/published-at (coast/now)}))
-        [post errors] (-> (coast/validate params [[:required [:post/title :post/body]]])
-                          (merge {:post/member (:member/id member)})
-                          (select-keys [:post/member :post/body :post/published-at :post/title])
+        params (assoc params :post/slug (slug (:post/title (:params request))))
+        [post errors] (-> (merge params {:post/member (:member/id member)})
+                          (coast/validate [[:required [:post/member]]])
+                          (select-keys [:post/member :post/body :post/slug :post/published-at :post/title])
                           (coast/insert)
                           (coast/rescue))]
     (if (nil? errors)
@@ -85,7 +113,10 @@
           :url (coast/url-for ::edit post)}
          :json)
         (coast/redirect-to :home/dashboard))
-      (build (merge request errors)))))
+      (if (coast/xhr? request)
+        (coast/server-error
+         (form (coast/action-for ::create) (merge request errors)))
+        (build (merge request errors))))))
 
 
 (defn edit [request]
@@ -105,15 +136,17 @@
 
 (defn change [request]
   (let [post (coast/fetch :post (-> request :params :post-id))
-        post (if (coast/xhr? request)
+        post (if (or (coast/xhr? request)
+                     (some? (:post/published-at post)))
                post
-               (if (some? (:post/published-at post))
-                 post
-                 (merge post {:post/published-at (coast/now)})))
-        [_ errors] (-> (select-keys post [:post/id :post/member :post/published-at])
+               (merge post {:post/published-at (coast/now)}))
+        post (if (some? (:post/published-at post))
+               post
+               (assoc post :post/slug (slug (:post/title (:params request)))))
+        [_ errors] (-> (select-keys post [:post/id :post/member :post/slug :post/published-at])
                        (merge (select-keys (:params request) [:post/title :post/body]))
-                       (coast/validate [[:required [:post/id :post/member :post/body :post/title]]])
-                       (select-keys [:post/id :post/member :post/body :post/published-at :post/title])
+                       (coast/validate [[:required [:post/id :post/member]]])
+                       (select-keys [:post/id :post/member :post/slug :post/body :post/published-at :post/title])
                        (coast/update)
                        (coast/rescue))]
     (if (coast/xhr? request)
