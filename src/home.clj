@@ -62,7 +62,8 @@
 
 (defn dashboard [request]
   (let [members (coast/q '[:select * :from member])
-        invites (coast/q '[:select * :from invite])]
+        invites (coast/q '[:select * :from invite])
+        posts (coast/q '[:select * :from post])]
     (container {:mw 9}
       [:h1 {:class "f2"} "Members"]
       (table
@@ -116,7 +117,41 @@
              (td
                (link-to (coast/url-for :invite/edit invite) "Edit"))
              (td
-               (button-to (coast/action-for :invite/delete invite) {:data-confirm "Are you sure?"} "Delete")))))))))
+               (button-to (coast/action-for :invite/delete invite) {:data-confirm "Are you sure?"} "Delete"))))))
+
+      [:h1 {:class "f2"} "Posts"]
+      (when (not (empty? posts))
+       (link-to (coast/url-for :post/build) "New post"))
+
+      (when (empty? posts)
+       [:div.tc
+         (link-to (coast/url-for :post/build) "New post")])
+      (table
+       (thead
+         (tr
+           (th "id")
+           (th "member")
+           (th "title")
+           (th "body")
+           (th "published-at")
+           (th "updated-at")
+           (th "created-at")))
+       (tbody
+         (for [post posts]
+           (tr
+             (td (:post/id post))
+             (td (:post/member post))
+             (td (:post/title post))
+             (td (str (subs (:post/body post) 0 80) "..."))
+             (td (:post/published-at post))
+             (td (:post/updated-at post))
+             (td (:post/created-at post))
+             (td
+               (link-to (coast/url-for :post/view post) "View"))
+             (td
+               (link-to (coast/url-for :post/edit post) "Edit"))
+             (td
+               (button-to (coast/action-for :post/delete post) {:data-confirm "Are you sure?"} "Delete")))))))))
 
 
 (defn not-found [request]

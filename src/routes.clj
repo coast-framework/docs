@@ -6,7 +6,7 @@
 (def routes
   (coast/site
     (coast/with middleware/set-title
-      (coast/with-layout components/layout
+      (coast/with-layout :components/layout
         [:get "/" :home/index]
         [:get "/docs" :home/docs]
         [:get "/docs/:doc.md" :home/doc]
@@ -19,12 +19,16 @@
 
         [:resource :invite :only [:build :create]]
 
-        (coast/with middleware/auth
+        (coast/with middleware/auth middleware/set-current-member
           [:get "/dashboard" :home/dashboard]
           [:delete "/sessions" :session/delete]
           [:resource :member :except [:index :view :build :create]]
           [:resource :invite :except [:index :view :build :create]]
-          [:put "/invite/:invite-id/approve" :invite/approve])))
+          [:resource :post :only [:build :create :edit :change :delete]]
+          [:post "/posts/preview" :post/preview]
+          [:put "/invite/:invite-id/approve" :invite/approve])
+
+        [:resource :post :only [:view]]))
 
     [:404 :home/not-found]
     [:500 :home/server-error]))
