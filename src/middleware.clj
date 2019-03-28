@@ -9,6 +9,14 @@
       (coast/unauthorized "HAL9000 says: I'm sorry Dave, I can't let you do that"))))
 
 
+(defn set-current-member [handler]
+  (fn [request]
+    (let [email (get-in request [:session :member/email])
+          m {:member/email email}
+          member (coast/find-by :member m)]
+      (handler (assoc request :member member)))))
+
+
 (defn capitalize-words
   "Capitalize every word in a string"
   [s]
