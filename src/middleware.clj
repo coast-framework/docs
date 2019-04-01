@@ -9,7 +9,7 @@
       (coast/unauthorized "HAL9000 says: I'm sorry Dave, I can't let you do that"))))
 
 
-(defn set-current-member [handler]
+(defn current-member [handler]
   (fn [request]
     (let [email (get-in request [:session :member/email])
           m {:member/email email}
@@ -27,7 +27,7 @@
     #"[^a-zA-Z\d\s:]" " "))
 
 
-(defn set-title [handler]
+(defn title [handler]
   (fn [request]
     (-> (assoc request :title (capitalize-words (get-in request [:params :doc])))
         (handler))))
