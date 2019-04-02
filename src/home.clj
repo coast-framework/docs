@@ -1,6 +1,7 @@
 (ns home
   (:require [coast]
-            [components :refer [container hero table thead td tr tbody th link-to button-to]]))
+            [components :refer [container hero table thead td tr tbody th link-to button-to]]
+            [helpers]))
 
 
 (defn index [request]
@@ -144,7 +145,7 @@
              (td (:post/member post))
              (td (:post/title post))
              (td (:post/slug post))
-             (td (str (subs (:post/body post) 0 20) "..."))
+             (td (helpers/ellipsis (:post/body post) 20))
              (td (:post/published-at post))
              (td (:post/updated-at post))
              (td (:post/created-at post))

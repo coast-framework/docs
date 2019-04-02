@@ -1,5 +1,6 @@
 (ns post
   (:require [coast]
+            [helpers]
             [markdown.core :as markdown]
             [clojure.string :as string]
             [components :refer [submit-block container tc link-to table thead tbody td th tr button-to text-muted mr2 dl dd dt submit input label textarea]]))
@@ -23,7 +24,7 @@
         (for [{:post/keys [title body] :as post} posts]
           [:div {:class "mb4"}
            [:h2 {:class "f2-l f-subheadline-l f3"} title]
-           [:p (subs body 0 150)]
+           [:p (helpers/ellipsis body 150)]
            [:a {:href (coast/url-for :post/view post)
                 :class "underline blue"}
             "Read More"]])])))
