@@ -21,10 +21,13 @@
   (let [posts (coast/q '[:select * :from post])]
     (container {:mw 7}
       [:div {:class "content"}
-        (for [{:post/keys [title body] :as post} posts]
-          [:div {:class "mb4"}
-           [:h2 {:class "f2-l f-subheadline-l f3"} title]
-           [:p (helpers/ellipsis body 150)]
+        (for [{:post/keys [title body published-at] :as post} posts]
+          [:div {:class "mb5"}
+           [:time {:class "f6 gray mb1 dib"} (coast/strftime
+                                              (coast/datetime published-at "US/Mountain")
+                                              "MMMM dd, YYYY")]
+           [:h2 {:class "pa0 f2-l f-subheadline-l f3 ma0" :style "padding-top: 0"} title]
+           [:p {:class "pb0 mb1"} (helpers/ellipsis body 150)]
            [:a {:href (coast/url-for :post/view post)
                 :class "underline blue"}
             "Read More"]])])))
@@ -33,15 +36,17 @@
 
 (defn view [request]
   (let [slug (-> request :params :post-slug)
-        post (coast/find-by :post {:slug slug})]
+        {:post/keys [published-at title body] :as post} (coast/find-by :post {:slug slug})]
     (if (nil? post)
       (coast/raise {:not-found true})
       (container {:mw 7}
-        [:h2 {:class "f1-l f-subheadline-l f2"}
-          (:post/title post)]
+        [:time {:class "f6 gray mb1 dib"} (coast/strftime
+                                           (coast/datetime published-at "US/Mountain")
+                                           "MMMM dd, YYYY")]
+        [:h2 {:class "pa0 ma0 f1-l f-subheadline-l f2"} title]
         [:div {:class "content"}
          (coast/raw
-           (markdown/md-to-html-string (:post/body post)))]))))
+           (markdown/md-to-html-string body))]))))
 
 
 (defn errors [m]
@@ -100,7 +105,7 @@
 (defn create [{:keys [member params] :as request}]
   (let [params (if (coast/xhr? request)
                  params
-                 (merge params {:post/published-at (coast/now)}))
+                 (assoc params :post/published-at (coast/now)))
         params (assoc params :post/slug (slug (:post/title (:params request))))
         [post errors] (-> (merge params {:post/member (:member/id member)})
                           (coast/validate [[:required [:post/member]]])
@@ -137,13 +142,10 @@
 
 (defn change [request]
   (let [post (coast/fetch :post (-> request :params :post-id))
-        post (if (or (coast/xhr? request)
-                     (some? (:post/published-at post)))
-               post
-               (merge post {:post/published-at (coast/now)}))
         post (if (some? (:post/published-at post))
                post
-               (assoc post :post/slug (slug (:post/title (:params request)))))
+               (assoc post :post/published-at (coast/now)
+                           :post/slug (slug (:post/title (:params request)))))
         [_ errors] (-> (select-keys post [:post/id :post/member :post/slug :post/published-at])
                        (merge (select-keys (:params request) [:post/title :post/body]))
                        (coast/validate [[:required [:post/id :post/member]]])

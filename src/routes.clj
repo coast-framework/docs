@@ -29,8 +29,8 @@
            [:post "/posts/preview" :post/preview]
            [:put "/invite/:invite-id/approve" :invite/approve])
 
-         [:get "/blog/:post-slug" :post/view]
-         [:get "/blog" :post/index])))
+         [:get "/posts/:post-slug" :post/view]
+         [:get "/posts" :post/index])))
 
 
     (coast/api

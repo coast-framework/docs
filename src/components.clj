@@ -12,7 +12,7 @@
     [:img {:src "/favicon.png" :class "dib w2 h2 br-100" :alt "Coast on Clojure"}]
     [:span {:class "ml2 v-top mt2 dib white"} "Coast"]]
    [:div {:class "dtc v-mid w-75 tr"}
-    [:a {:class "link dim white f6 f5-ns dib mr3 mr4-ns" :href (coast/url-for :post/index) :title "Blog"} "Blog"]
+    [:a {:class "link dim white f6 f5-ns dib mr3 mr4-ns" :href (coast/url-for :post/index) :title "Posts"} "Posts"]
     [:a {:class "link dim white f6 f5-ns dib mr3 mr4-ns" :href (coast/url-for :home/docs) :title "Docs"} "Docs"]
     [:a {:class "link dim white f6 f5-ns dib mr3 mr4-ns" :href "https://twitter.com/coastonclojure" :title "Twitter"} "Twitter"]
     [:a {:class "link dim white f6 f5-ns dib" :href "https://github.com/coast-framework/coast" :title "Github"} "Github"]]])
