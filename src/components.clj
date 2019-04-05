@@ -109,6 +109,7 @@
 (defn submit-block [value]
   [:input {:class "input-reset pointer dim db bn w-100 f6 br2 ph4 pv3 dib white bg-blue"
            :type "submit"
+           :name "submit"
            :value value}])
 
 (defn dt [s]
