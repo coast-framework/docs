@@ -20,7 +20,8 @@
 (defn index [request]
   (let [posts (coast/q '[:select *
                          :from post
-                         :where ["published_at is not null"]]
+                         :where ["published_at is not null"]
+                         :order published-at desc]
                        {:published-at nil})]
     (container {:mw 7}
       [:div {:class "content"}
