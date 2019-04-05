@@ -76,7 +76,6 @@
        (-> request :params :post/body))
 
      [:div.mb3]
-     [:span.mr3]
      (submit-block "Publish"))])
 
 
