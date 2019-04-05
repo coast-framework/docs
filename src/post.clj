@@ -135,21 +135,31 @@
          [:div {:id "status" :class "f6 gray mb2"} (coast/raw "Saved")]]
        [:div.fr
          [:a {:class "blue pointer dim mr3" :id "edit"} "Edit"]
-         [:a {:class "gray pointer dim" :id "preview"} "Preview"]]]
+         [:a {:class "gray pointer dim mr3" :id "preview"} "Preview"]
+         (coast/form (merge (coast/action-for ::change post) {:class "dib ma0"})
+           [:input {:class "input-reset bn bg-transparent gray pointer dim"
+                    :type "submit"
+                    :name "submit"
+                    :value "Un-publish"}])]]
 
       [:div {:id "preview-container"}]
       [:div {:id "form-container"}
         (form (coast/action-for ::change post) {:params post})])))
 
 
-(defn change [request]
-  (let [post (coast/fetch :post (-> request :params :post-id))
-        post (if (some? (:post/published-at post))
+(defn change [{:keys [params] :as request}]
+  (let [post (coast/fetch :post (:post-id params))
+        post (if (some? (:post/slug post))
                post
-               (assoc post :post/published-at (coast/now)
-                           :post/slug (slug (:post/title (:params request)))))
+               (assoc post :post/slug (slug (:post/title params))))
+        post (condp = (:submit params)
+               "Publish" (if (some? (:post/published-at post))
+                           post
+                           (assoc post :post/published-at (coast/now)))
+               "Un-publish" (assoc post :post/published-at nil)
+               post)
         [_ errors] (-> (select-keys post [:post/id :post/member :post/slug :post/published-at])
-                       (merge (select-keys (:params request) [:post/title :post/body]))
+                       (merge (select-keys params [:post/title :post/body]))
                        (coast/validate [[:required [:post/id :post/member]]])
                        (select-keys [:post/id :post/member :post/slug :post/body :post/published-at :post/title])
                        (coast/update)
