@@ -18,7 +18,10 @@
 
 
 (defn index [request]
-  (let [posts (coast/q '[:select * :from post])]
+  (let [posts (coast/q '[:select *
+                         :from post
+                         :where ["published_at is not null"]]
+                       {:published-at nil})]
     (container {:mw 7}
       [:div {:class "content"}
         (for [{:post/keys [title body published-at] :as post} posts]
