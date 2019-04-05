@@ -39,7 +39,12 @@
 
 (defn view [request]
   (let [slug (-> request :params :post-slug)
-        {:post/keys [published-at title body] :as post} (coast/find-by :post {:slug slug})]
+        post (coast/pluck '[:select *
+                            :from post
+                            :where [slug ?slug]
+                                   ["published_at is not null"]]
+                           {:slug slug})
+        {:post/keys [published-at title body]} post]
     (if (nil? post)
       (coast/raise {:not-found true})
       (container {:mw 7}
