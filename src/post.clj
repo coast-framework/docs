@@ -31,7 +31,8 @@
                                               (coast/datetime published-at "US/Mountain")
                                               "MMMM dd, YYYY")]
            [:h2 {:class "pa0 f2-l f-subheadline-l f3 ma0" :style "padding-top: 0"} title]
-           [:p {:class "pb0 mb1"} (helpers/ellipsis body 150)]
+           [:p {:class "pb0 mb1"}
+            (helpers/ellipsis body 50)]
            [:a {:href (coast/url-for :post/view post)
                 :class "underline blue"}
             "Read More"]])])))
