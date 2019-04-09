@@ -18,7 +18,7 @@
     [:a {:class "link dim white f6 f5-ns dib" :href "https://github.com/coast-framework/coast" :title "Github"} "Github"]]])
 
 
-(defn layout [{:keys [flash title session]} body]
+(defn layout [{:keys [flash title session]} body & scripts]
   [:html
     [:head
      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
@@ -34,9 +34,14 @@
        flash])
      (nav session)
      body
-     [:script {:src "/js/highlight.pack.js"}]
-     [:script
-      "hljs.initHighlightingOnLoad();"]]])
+     scripts]])
+
+
+(defn doc-layout [request body]
+  (layout request body
+    [:script {:src "/js/highlight.pack.js"}]
+    [:script
+     "hljs.initHighlightingOnLoad();"]))
 
 
 (defn link-to [url & body]

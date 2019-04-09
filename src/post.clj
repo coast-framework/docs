@@ -38,7 +38,6 @@
             "Read More"]])])))
 
 
-
 (defn view [request]
   (let [slug (-> request :params :post-slug)
         post (coast/pluck '[:select *
@@ -50,11 +49,14 @@
     (if (nil? post)
       (coast/raise {:not-found true})
       (container {:mw 7}
-        [:time {:class "f6 gray mb1 dib"} (coast/strftime
-                                           (coast/datetime published-at "US/Mountain")
-                                           "MMMM dd, YYYY")]
-        [:h2 {:class "pa0 ma0 f1-l f-subheadline-l f2"} title]
-        [:div {:class "content"}
+        [:article
+         [:time {:class "f6 gray mb1 dib"
+                 :data-seconds published-at
+                 :data-date true}
+          (coast/strftime
+           (coast/datetime published-at "US/Mountain")
+           "MMMM dd, YYYY")]
+         [:h1 title]
          (coast/raw
            (markdown/md-to-html-string body))]))))
 

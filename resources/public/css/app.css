@@ -1,6 +1,9 @@
 html, body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: system-ui;
   height: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
 }
 
 @font-face {
@@ -58,7 +61,6 @@ html, body {
   font-weight: bold;
   font-style: italic;
 }
-
 
 .grid {
   display: grid;
@@ -205,4 +207,106 @@ html, body {
 
 .bg-nearest-white {
   background-color: #f9fafb;
+}
+
+img[src*="#cover"] {
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0 auto;
+  max-height: 300px;
+  max-width: 1000px;
+}
+
+article {
+  display: grid;
+  grid-template-columns: 1fr 1fr 10px minmax(340px, 740px) 10px 1fr 1fr;
+}
+
+article > * {
+  grid-column: 4;
+}
+
+article > figure {
+  grid-column: 1 / -1;
+  margin: 20px 0;
+}
+
+article > .aside {
+  grid-column: 5 / -1;
+}
+
+article > blockquote {
+  grid-column: 3 / span 2;
+  margin: 0px 0;
+  color: #666;
+  border-left: 3px solid black;
+  padding-left: 10px;
+}
+
+article > * {
+  min-width: 0;
+}
+
+article > h1 {
+  font-family: system-ui;
+}
+
+article > p {
+  --x-height-multiplier: 0.375;
+  --baseline-multiplier: 0.17;
+  font-family: Georgia,Cambria,"Times New Roman",Times,serif;
+  letter-spacing: .01rem;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 21px;
+  line-height: 1.58;
+  letter-spacing: -.003em;
+  color: rgba(0,0,0,.84);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+article > .aside {
+  font-family: system-ui;
+  margin: 30px 20px;
+  color: #666;
+  font-size: 0.8em;
+}
+
+article img {
+  width: 100%;
+}
+
+article .line-numbers a {
+  text-decoration: none;
+  color: #000;
+  padding-right: 1em;
+}
+
+article code {
+  background: #eee;
+  padding: 2px 5px;
+  font-family: monaco;
+  font-size: 16px;
+}
+
+article pre {
+  background: #eee;
+  padding: 10px 15px;
+  overflow: auto;
+}
+
+article pre > code {
+  padding: 0;
+}
+
+article figure {
+  margin: 0;
+}
+
+article figure figcaption {
+  color: #666;
+  font-style: italic;
+  font-size: 0.8em;
 }

@@ -8,10 +8,11 @@
 
     (coast/site
       (coast/with middleware/title
+       (coast/with-layout :components/doc-layout
+         [:get "/docs" :home/docs]
+         [:get "/docs/:doc.md" :home/doc])
        (coast/with-layout :components/layout
          [:get "/" :home/index]
-         [:get "/docs" :home/docs]
-         [:get "/docs/:doc.md" :home/doc]
          [:get "/screencast" :home/screencast]
          [:get "/sign-up" :member/build]
          [:post "/members" :member/create]
