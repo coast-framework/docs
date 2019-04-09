@@ -19,6 +19,7 @@
   :uberjar
   {:main-opts ["-m" "cambada.uberjar"
                "-m" "server"]
-   :extra-deps {luchiniatwork/cambada {:mvn/version "1.0.0"}}}
+   :extra-deps {luchiniatwork/cambada {:git/url "https://github.com/xfthhxk/cambada"
+                                       :sha "30de5e2ec53526522b2a1314ff240678edf8a134"}}}
 
   :repl {:extra-deps {nrepl {:mvn/version "0.6.0"}}}}}
