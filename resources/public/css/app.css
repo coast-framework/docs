@@ -30,38 +30,6 @@ html, body {
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Lato';
-  src: local('Lato'),
-       url('/fonts/Lato-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Lato';
-  src: local('Lato'),
-       url('/fonts/Lato-Italic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Lato';
-  src: local('Lato'),
-       url('/fonts/Lato-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Lato';
-  src: local('Lato'),
-       url('/fonts/Lato-BoldItalic.ttf') format('truetype');
-  font-weight: bold;
-  font-style: italic;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -76,13 +44,19 @@ html, body {
 }
 
 .content {
-  font-family: 'Lato';
-  color: #333;
-  font-size: 18px;
+  font-family: system-ui;
+  --x-height-multiplier: 0.375;
+  --baseline-multiplier: 0.17;
+  font-family: system-ui;
+  letter-spacing: .01rem;
+  font-weight: 400;
   font-style: normal;
-  font-weight: normal;
-  letter-spacing: -0.06300000101327896px;
-  line-height: 31px;
+  font-size: 21px;
+  line-height: 1.58;
+  letter-spacing: -.003em;
+  color: rgba(0,0,0,.84);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .sidebar h1 {
@@ -122,14 +96,6 @@ html, body {
   border-top: solid 3px #357EDD;
   background-color: #f9fafb;
   padding: 30px;
-}
-
-.content h1, .content h2, .content h3, .content h4 {
-  padding-top: 30px;
-}
-
-.content:first-child h1 {
-  padding-top: 0;
 }
 
 .content a {
@@ -185,20 +151,19 @@ html, body {
   background-color: #efefef;
 }
 
+.content code {
+  font-family: 'Source Code Pro';
+  font-size: 16px;
+}
+
 .content > p > code {
   background-color: #eee;
   padding: 0 5px;
-  font-family: 'Source Code Pro';
 }
 
 .content > h4 > code {
   background-color: #eee;
   padding: 0 5px;
-  font-family: 'Source Code Pro';
-}
-
-.content code {
-  font-family: 'Source Code Pro';
 }
 
 .hero-topo-bg {
@@ -255,7 +220,7 @@ article > h1 {
 article > p {
   --x-height-multiplier: 0.375;
   --baseline-multiplier: 0.17;
-  font-family: Georgia,Cambria,"Times New Roman",Times,serif;
+  font-family: system-ui;
   letter-spacing: .01rem;
   font-weight: 400;
   font-style: normal;
@@ -287,7 +252,7 @@ article .line-numbers a {
 article code {
   background: #eee;
   padding: 2px 5px;
-  font-family: monaco;
+  font-family: 'Source Code Pro';
   font-size: 16px;
 }
 
