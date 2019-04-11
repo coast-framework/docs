@@ -24,21 +24,20 @@
                          :order published-at desc]
                        {:published-at nil})]
     (container {:mw 7}
-      [:div {:class "content"}
-        (for [{:post/keys [title body published-at] :as post} posts]
-          [:div {:class "mb5"}
-           [:time {:class "f6 gray mb1 dib"
-                   :data-seconds published-at
-                   :data-date true}
-            (coast/strftime
-             (coast/datetime published-at "US/Mountain")
-             "MMMM dd, YYYY")]
-           [:h2 {:class "pa0 f2-l f-subheadline-l f3 ma0" :style "padding-top: 0"} title]
-           [:p {:class "pb0 mb1"}
-            (helpers/ellipsis body 50)]
-           [:a {:href (coast/url-for :post/view post)
-                :class "underline blue"}
-            "Read More"]])])))
+      (for [{:post/keys [title body published-at] :as post} posts]
+        [:article {:class "mb5"}
+         [:time {:class "f6 gray mb1 dib"
+                 :data-seconds published-at
+                 :data-date true}
+          (coast/strftime
+           (coast/datetime published-at "US/Mountain")
+           "MMMM dd, YYYY")]
+         [:h1 {:class "ma0"} title]
+         [:p {:class "pb0 mb1"}
+          (helpers/ellipsis body 50)]
+         [:a {:href (coast/url-for :post/view post)
+              :class "underline blue"}
+          "Read More"]]))))
 
 
 (defn view [request]
@@ -59,7 +58,7 @@
           (coast/strftime
            (coast/datetime published-at "US/Mountain")
            "MMMM dd, YYYY")]
-         [:h1 title]
+         [:h1 {:class "ma0"} title]
          (coast/raw
            (markdown/md-to-html-string body))]))))
 
