@@ -22,4 +22,4 @@
    :extra-deps {luchiniatwork/cambada {:git/url "https://github.com/xfthhxk/cambada"
                                        :sha "30de5e2ec53526522b2a1314ff240678edf8a134"}}}
 
-  :repl {:extra-deps {nrepl {:mvn/version "0.6.0"}}}}}
+  :repl {:jvm-opts ["-Dclojure.server.repl={:port,5555,:accept,clojure.core.server/repl}"]}}}
