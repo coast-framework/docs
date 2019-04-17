@@ -43,22 +43,6 @@ html, body {
   grid-column: span 2;
 }
 
-.content {
-  font-family: system-ui;
-  --x-height-multiplier: 0.375;
-  --baseline-multiplier: 0.17;
-  font-family: system-ui;
-  letter-spacing: .01rem;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 21px;
-  line-height: 1.58;
-  letter-spacing: -.003em;
-  color: rgba(0,0,0,.84);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-
 .sidebar h1 {
   display: none;
 }
@@ -84,6 +68,21 @@ html, body {
 
 .sidebar ul li a:hover {
   color: #357EDD;
+}
+
+.content {
+  --x-height-multiplier: 0.375;
+  --baseline-multiplier: 0.17;
+  font-family: system-ui;
+  letter-spacing: .01rem;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 21px;
+  line-height: 1.58;
+  letter-spacing: -.003em;
+  color: rgba(0,0,0,.84);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .content .note {
