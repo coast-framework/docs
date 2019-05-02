@@ -7,13 +7,20 @@
 (defn index [request]
   [:div
    (hero
-    [:div {:class "tc-l ph3"}
-     [:h1 {:class "f2 f1-l fw3 white mb0 lh-title mb4"} "Clojure web development made easy"]
-     [:a {:class "no-underline br2 shadow-4 grow dib v-mid bg-green white ba b--green ph4 pv3 mb3 br1" :href (coast/url-for ::docs)} "Get Started with Coast"]])
+    [:div {:class "mw8 center tc tl-ns"}
+     [:div {:class "cf"}
+      [:div {:class "fl w-50-ns w-100 near-black ph3"}
+       [:h1 {:class "f3 f2-l fw3 lh-title"} "Easy clojure web development"]
+       [:p {:class "lh-copy measure"}
+        "Coast is a complete web application framework for developing web apps in less time and more fun"]
+       [:a {:class "dn dib-ns no-underline br2 shadow-4 grow v-mid bg-green white ba b--green ph4 pv3 mb3 br1 mt3" :href (coast/url-for ::docs)} "Get Started with Coast"]]
+      [:div {:class "fl w-50-ns w-100 ph3 mt2"}
+       [:img {:src "/images/basic-server.gif" :class "w-100"}]
+       [:a {:class "dn-ns dib no-underline br2 shadow-4 grow v-mid bg-green white ba b--green ph4 pv3 mb3 br1 mt3" :href (coast/url-for ::docs)} "Get Started with Coast"]]]])
 
-   [:div {:class "pv6 bg-white"}
+   [:div {:class "pv6 hero-topo-bg white"}
     [:div {:class "tc-l ph3"}
-     [:h2 {:class "f2 f1-l fw3 near-black mb0 lh-title mb4"}
+     [:h2 {:class "f2 f1-l fw3 mb0 lh-title mb4"}
       "The missing clojure web framework"]
      [:p {:class "lh-copy measure center-l"}
       "Making a modern web app can be crazy. Between tracking down up-to-date, secure dependencies and your own application code, things can get out of control quickly.
@@ -21,20 +28,20 @@
        It includes everything you need to make great web applications."]]]
 
    (hero
-    [:div {:class "cf ph3 mw8 center white"}
-     [:div {:class "fl w-100 w-third-ns ph2"}
+    [:div {:class "cf mw8 center near-black"}
+     [:div {:class "fl w-100 w-third-ns ph4"}
       [:h3 {:class "f3 f2-l fw3 mb0 lh-title"}
         "⚡️ Fast"]
       [:p {:class "lh-copy measure"}
         "Coast was made to take your ideas from thought to completion to as fast as possible"]]
 
-     [:div {:class "fl w-100 w-third-ns ph2"}
+     [:div {:class "fl w-100 w-third-ns ph4"}
       [:h3 {:class "f3 f2-l fw3 mb0 lh-title"}
         "👮‍♂️ Secure"]
       [:p {:class "lh-copy measure"}
         "Coast takes security seriously and helps you avoid many common security mistakes"]]
 
-     [:div {:class "fl w-100 w-third-ns ph2"}
+     [:div {:class "fl w-100 w-third-ns ph4"}
       [:h3 {:class "f3 f2-l fw3 mb0 lh-title"}
         "🎉 Fun"]
       [:p {:class "lh-copy measure"}

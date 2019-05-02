@@ -174,7 +174,7 @@
 
 
 (defn hero [& body]
-  [:div {:class "hero-topo-bg pv6"}
+  [:div {:class "pv6-ns pv4"}
     body])
 
 
