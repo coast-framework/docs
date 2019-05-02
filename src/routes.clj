@@ -11,6 +11,7 @@
        (coast/with-layout :components/doc-layout
          [:get "/docs" :home/docs]
          [:get "/docs/:doc.md" :home/doc])
+
        (coast/with-layout :components/layout
          [:get "/" :home/index]
          [:get "/screencast" :home/screencast]
