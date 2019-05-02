@@ -7,15 +7,26 @@
 (defn index [request]
   [:div
    (hero
-    [:div {:class "mw8 center tc tl-ns"}
+    [:div {:class "mw8 center"}
      [:div {:class "cf"}
       [:div {:class "fl w-50-ns w-100 near-black ph3"}
-       [:h1 {:class "f3 f2-l fw3 lh-title"} "Easy clojure web development"]
+       [:h1 {:class "f2 f1-l fw3 lh-title"} "Easy clojure web development"]
        [:p {:class "lh-copy measure"}
         "Coast is a complete web application framework for developing web apps in less time and more fun"]
        [:a {:class "dn dib-ns no-underline br2 shadow-4 grow v-mid bg-green white ba b--green ph4 pv3 mb3 br1 mt3" :href (coast/url-for ::docs)} "Get Started with Coast"]]
       [:div {:class "fl w-50-ns w-100 ph3 mt2"}
-       [:img {:src "/images/basic-server.gif" :class "w-100"}]
+       (coast/raw "<pre><code style=\"padding: 20px\" class=\"clojure\">(ns server
+  (:require [coast]))
+
+(defn home [request]
+  (coast/ok \"You're coasting on clojure\"))
+
+(def routes (coast/routes [:get \"/\" ::home]))
+
+(def app (coast/app {:routes routes}))
+
+(coast/server app {:port 1337})]</code></pre>")
+
        [:a {:class "dn-ns dib no-underline br2 shadow-4 grow v-mid bg-green white ba b--green ph4 pv3 mb3 br1 mt3" :href (coast/url-for ::docs)} "Get Started with Coast"]]]])
 
    [:div {:class "pv6 hero-topo-bg white"}
