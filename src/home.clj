@@ -25,7 +25,7 @@
 
 (def app (coast/app {:routes routes}))
 
-(coast/server app {:port 1337})]</code></pre>")
+(coast/server app {:port 1337})</code></pre>")
 
        [:a {:class "dn-ns dib no-underline br2 shadow-4 grow v-mid bg-green white ba b--green ph4 pv3 mb3 br1 mt3" :href (coast/url-for ::docs)} "Get Started with Coast"]]]])
 
